@@ -35,7 +35,7 @@ jobs:
       run: nuget restore GitTestAction.sln
 
     - name: Build the Solution
-      run: msbuild GitTestAction.sln /p:Configuration=Release --output '${{env.AZURE_WEBAPP_PACKAGE_PATH}}'
+      run: msbuild GitTestAction.sln /p:Configuration=Release --no-build --output '${{env.AZURE_WEBAPP_PACKAGE_PATH}}'
       
 #     - name: run dir
 #       run: dir D:\a\GitTestAction\ && dir D:\a\GitTestAction\GitTestAction\ && dir D:\a\GitTestAction\GitTestAction\bin\  && dir D:\a\GitTestAction\GitTestAction\obj\Release\
