@@ -5,9 +5,11 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ Dev ]
+    branches:
+       - Dev
   pull_request:
-    branches: [ Dev ]
+    branches:
+       - Dev
 
 env:
   AZURE_DEVWEBAPP_NAME: GitAc-Dev
