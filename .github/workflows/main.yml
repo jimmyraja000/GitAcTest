@@ -6,10 +6,10 @@ name: CI
 on:
   push:
     branches:
-       - Dev
+       - main
   pull_request:
     branches:
-       - Dev
+       - main
 
 env:
   AZURE_DEVWEBAPP_NAME: GitAc-Dev
