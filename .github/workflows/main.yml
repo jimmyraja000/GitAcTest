@@ -1,0 +1,71 @@
+
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request 
+# events but only for the master branch
+on:
+  push:
+    branches:
+       - main
+  pull_request:
+    branches:
+       - main
+
+env:
+  AZURE_DEVWEBAPP_NAME: GitAc-Dev
+  AZURE_PREPRODWEBAPP_NAME: GitAc-PreProd
+  AZURE_WEBAPP_PACKAGE_PATH: "/p:Configuration=Release" 
+
+jobs:
+  # This workflow contains a single job called "Build"
+  Build:
+    runs-on: [windows-latest]
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+      
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.5
+
+    - name: Restore NuGet packages
+      run: nuget restore GitAcTest.sln
+
+    - name: Build the Solution
+      run: msbuild GitTestAction.sln /p:Configuration=Release 
+      
+#     - name: run dir
+#       run: dir D:\a\GitTestAction\ && dir D:\a\GitTestAction\GitTestAction\ && dir D:\a\GitTestAction\GitTestAction\bin\  && dir D:\a\GitTestAction\GitTestAction\obj\Release\
+
+  Dev:
+   runs-on: windows-latest
+   steps:
+     - name: Deployment to Dev
+       uses: Azure/webapps-deploy@v2
+       with:
+          app-name: ${{env.AZURE_DEVWEBAPP_NAME}}
+          publish-profile: ${{secrets.AZURE_DEVPUBLISH_PROFILE}}
+          package: "${{env.AZURE_WEBAPP_PACKAGE_PATH}}"
+          
+  PreProd:
+   runs-on: windows-latest
+   steps:
+     - name: Deployment to Dev
+       uses: Azure/webapps-deploy@v2
+       with:
+          app-name: ${{env.AZURE_PREPRODWEBAPP_NAME}}
+          publish-profile: ${{secrets.AZURE_PREPRODPUBLISH_PROFILE}}
+          package: "${{env.AZURE_WEBAPP_PACKAGE_PATH}}"    
+#    approvals:
+#     review:
+#       required: 2
+#       notify:
+#         emails:
+#            - jimmy@centroxy.com
+# #         teams:
+# #           - developers
+
+
