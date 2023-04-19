@@ -14,7 +14,7 @@ on:
 env:
   AZURE_DEVWEBAPP_NAME: GitAc-Dev
   AZURE_PREPRODWEBAPP_NAME: GitAc-PreProd
-  AZURE_WEBAPP_PACKAGE_PATH: "D:\a\GitTestAction\GitTestAction" 
+  AZURE_WEBAPP_PACKAGE_PATH: "/p:Configuration=Release" 
 
 jobs:
   # This workflow contains a single job called "Build"
@@ -35,7 +35,7 @@ jobs:
       run: nuget restore GitTestAction.sln
 
     - name: Build the Solution
-      run: msbuild GitTestAction.sln /p:Configuration=Release --no-build --output '${{env.AZURE_WEBAPP_PACKAGE_PATH}}'
+      run: msbuild GitTestAction.sln /p:Configuration=Release 
       
 #     - name: run dir
 #       run: dir D:\a\GitTestAction\ && dir D:\a\GitTestAction\GitTestAction\ && dir D:\a\GitTestAction\GitTestAction\bin\  && dir D:\a\GitTestAction\GitTestAction\obj\Release\
